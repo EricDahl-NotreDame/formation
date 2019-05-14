@@ -5,7 +5,7 @@ canary
 docker
 firefox
 forklift
-google-chrome
+#google-chrome
 hyper
 imageoptim
 iterm2
