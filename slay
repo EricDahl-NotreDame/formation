@@ -149,8 +149,7 @@ fi
 # UPDATE: Homebrew
 ###############################################################################
 chapter "Updating Homebrew formulae…"
-brew update && brew upgrade
-brew tap buo/cask-upgrade
+brew update
 
 ###############################################################################
 # INSTALL: casks
@@ -161,7 +160,6 @@ if [ -e $cwd/swag/casks ]; then
 	for cask in $(<$cwd/swag/casks); do
 	    install_application_via_brew $cask
 	done
-	brew cu -y
 fi
 
 ###############################################################################
