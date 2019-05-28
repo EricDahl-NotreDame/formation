@@ -149,7 +149,8 @@ fi
 # UPDATE: Homebrew
 ###############################################################################
 chapter "Updating Homebrew formulae…"
-brew update
+brew update && brew upgrade
+brew tap buo/cask-upgrade
 
 ###############################################################################
 # INSTALL: casks
