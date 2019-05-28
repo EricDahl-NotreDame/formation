@@ -161,6 +161,7 @@ if [ -e $cwd/swag/casks ]; then
 	for cask in $(<$cwd/swag/casks); do
 	    install_application_via_brew $cask
 	done
+	brew cu -y
 fi
 
 ###############################################################################
