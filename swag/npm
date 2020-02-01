@@ -1,10 +1,10 @@
+@11ty/eleventy::eleventy
+@frctl/fractal::fractal
 beyonce::beyonce
 colortest::colortest
 cssstats-cli::cssstats
-@11ty/eleventy::eleventy
 eslint::eslint
 fast-cli::fast
-@frctl/fractal::fractal
 gatsby-cli::gatsby
 git-standup::git-standup
 gulp-cli::gulp
