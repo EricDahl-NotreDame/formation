@@ -1,6 +1,5 @@
 @11ty/eleventy::eleventy
 @frctl/fractal::fractal
-beyonce::beyonce
 colortest::colortest
 cssstats-cli::cssstats
 eslint::eslint
@@ -11,7 +10,6 @@ gulp-cli::gulp
 hotel::hotel
 html-sketchapp-cli::html-sketchapp
 imageoptim-cli::imageOptim
-npmusic::npmusic
 pa11y::pa11y
 parrotsay::parrotsay
 vsce::vsce
