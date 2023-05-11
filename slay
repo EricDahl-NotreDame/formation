@@ -74,12 +74,14 @@ chapter "Installing Dependencies…"
 # -----------------------------------------------------------------------------
 # XCode
 # -----------------------------------------------------------------------------
-if type xcode-select >&- && xpath=$( xcode-select --print-path ) &&
-	test -d "${xpath}" && test -x "${xpath}" ; then
+
+if xcode-select -p &> /dev/null && xpath=$( xcode-select --print-path ) && 
+	test -d ${xpath} && test -x ${xpath} ; then
 	print_success_muted "Xcode already installed. Skipping."
 else
 	step "Installing Xcode…"
-	xcode-select --install
+	PROD=$(softwareupdate -l | grep "\*.*Command Line" | tail -n 1 | sed 's/^[^C]* //')
+  	softwareupdate -i "$PROD" --verbose;
 	print_success "Xcode installed!"
 fi
 
@@ -87,16 +89,21 @@ if [ ! -d "$HOME/.bin/" ]; then
 	mkdir "$HOME/.bin"
 fi
 
+
 # -----------------------------------------------------------------------------
-# Bash-it
+# ZSH
 # -----------------------------------------------------------------------------
-if [ -d "$HOME/.bash_it" ]; then
-	print_success_muted "Bash-it already installed. Skipping."
+if [ "$HOME/.zshrc" ]; then
+	print_success_muted "Oh-my-zsh already installed. Skipping."
 else
-	step "Installing Bash-it…"
-	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
-	~/.bash_it/install.sh --silent --no-modify-config
-	print_success "Bash-it installed!"
+	step "Installing Oh-my-zsh…"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	chsh -s /bin/zsh
+
+	sudo git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+	print_success "Oh-my-zsh installed!"
 fi
 
 # -----------------------------------------------------------------------------
@@ -107,7 +114,7 @@ if [ -x nvm ]; then
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 	print_success "NVM installed!"
 	step "Installing latest Node…"
-	nvm install node
+	nvm install v14
 	nvm use node
 	nvm run node --version
 	nodev=$(node -v)
@@ -132,6 +139,17 @@ if brew list | grep -Fq brew-cask; then
 	step "Uninstalling old Homebrew-Cask…"
 	brew uninstall --force brew-cask
 	print_success "Homebrew-Cask uninstalled!"
+fi
+
+###############################################################################
+# INSTALL: taps
+###############################################################################
+if [ -e $cwd/swag/brews ]; then
+	chapter "Tapping Homebrew taps..."
+
+	for tap in $(<$cwd/swag/taps); do
+		brew_taps $tap
+	done
 fi
 
 ###############################################################################
@@ -173,7 +191,7 @@ if [ -x mas ]; then
 	else
 
 	if [ -e $cwd/swag/apps ]; then
-		if mas_setup; then
+		#if mas_setup; then
 			# Workaround for associative array in Bash 3
 			# https://stackoverflow.com/questions/6047648/bash-4-associative-arrays-error-declare-a-invalid-option
 			for app in $(<$cwd/swag/apps); do
@@ -181,9 +199,9 @@ if [ -x mas ]; then
 				VALUE="${app##*::}"
 				install_application_via_app_store $KEY $VALUE
 			done
-		else
-			print_warning "Please signin to App Store first. Skipping."
-		fi
+		# else
+		# 	print_warning "Please signin to App Store first. Skipping."
+		# fi
 	fi
 
 fi

@@ -529,6 +529,9 @@ ssh_key_setup() {
 }
 
 mas_setup() {
+
+    return 1 #workaround for mas
+
     if mas account > /dev/null; then
         return 0
     else
@@ -542,6 +545,16 @@ gem_install_or_update() {
     else
         gem install "$@"
         rbenv rehash
+    fi
+}
+
+brew_taps() {
+    if test ! $(brew tap | grep $tap); then
+        echo_install "Tapping $tap"
+		brew tap $tap >/dev/null
+		print_in_green "${bold}✓ tapped!${normal}\n"
+	else
+		print_success_muted "$tap already tapped. Skipped."
     fi
 }
 
