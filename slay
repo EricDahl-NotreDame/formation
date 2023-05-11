@@ -71,6 +71,18 @@ ssh_key_setup
 ###############################################################################
 chapter "Installing Dependencies…"
 
+
+# -----------------------------------------------------------------------------
+# Homebrew
+# -----------------------------------------------------------------------------
+
+if brew -h &> /dev/null; then
+        print_success_muted "Homebrew already installed. Skipping."
+else
+        step "Installing Homebrew"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
 # -----------------------------------------------------------------------------
 # XCode
 # -----------------------------------------------------------------------------
